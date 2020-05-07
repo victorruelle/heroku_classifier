@@ -59,6 +59,24 @@
         });
     </script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/init.js') }}"></script>
+    <style>
+        div.inner2 {
+            width: 50%;
+            margin: 0 auto;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .custom-file-upload {
+            border: 1px solid #ccc;
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+
+    </style>
 </head>
 
 <body class="landing">
@@ -69,28 +87,38 @@
             <h2>Pikachu, KanyeWest and Cats classifier demo</h2>
             <p>Upload a photo to see the prediction!</p>
             <form action="/" method="POST" enctype="multipart/form-data">
-                <input type="file" class="custom-file-input" name="image" id="image">
-                <button type="submit" class="btn btn-primary">Upload</button>
+                <label class="button big">
+                    <input type="file" class="custom-file-input" name="image" id="image"
+                        onchange="{ this.form.submit(); }">
+                    Select a photo
+                </label>
+                <!-- <button type="submit" class="btn btn-primary">Upload</button> -->
             </form>
-            <div class="button big"><a href="{{url_for('main.refresh')}}">Clear images</a></div>
         </div>
     </section>
 
-    {%for i in range(predictions| length)%}
+    {%if image_name != ""%}
 
-    <div class="container">
-        <div class="inner">
-            <div class="gallery">
-
-                <img src="{{ url_for('static',filename='images/'+image_names[i]) }}" alt="{{image_names[i]}}"
-                    width="600" height="400">
-                <div class="desc">
-                    <h4>We think this is {{predictions[i]}}</h4>
-                </div>
+    <div class="container" style="margin-top: 50px;">
+        <div class="inner2">
+            <img src="{{ url_for('static',filename='images/'+image_name) }}" alt="{{image_name}}" width="600"
+                height="400">
+            <div class="inner2 desc">
+                <h4>We think this is {{prediction}}</h4>
             </div>
         </div>
     </div>
 
-    {% endfor %}
+    {% endif %}
+
+    <div class="container" style="margin-top: 50px;">
+        <div class="inner2">
+            <h2>Data privacy</h2>
+            <p>Uploaded images are automatically deleted after 10 minutes and can be manually deleted
+                using the button below. Moreover, submitted pictures are associated with your IP address and only you
+                can view them as long as they're not deleted.</p>
+            <div class="button big inner2"><a href="{{url_for('main.refresh')}}">Clear image</a></div>
+        </div>
+    </div>
 
 </html>
