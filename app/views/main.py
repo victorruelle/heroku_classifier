@@ -72,9 +72,9 @@ def index_post():
             else:
                 raise Exception("Unexpected request : {}".format(request))
     
-    except Exception:
+    except Exception as err:
         print("Caught unexpected error... starting over")
-        flash("Caught unexpected error... starting over")
+        flash("Caught unexpected error {}... starting over".fomat(err))
         data_manager.refresh()
         return render_template("index.html", image_name=data_manager.get_image_name(), prediction=data_manager.get_prediction())
 

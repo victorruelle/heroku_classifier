@@ -78,8 +78,9 @@ class DataManager():
                 self.remove_user(session_id)
 
     def refresh(self):
-        while len(self.history)>0:
-            session_id = self.history[0]
-            self.remove_user(session_id)
+        self.predictions = {}
+        self.image_names = {}
+        self.history = {}
+
     
 data_manager = DataManager()
