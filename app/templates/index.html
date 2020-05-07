@@ -74,16 +74,16 @@
         </div>
     </section>
 
-    {%for image_name,prediction in predictions.items() %}
+    {%for i in range(predictions| length)%}
 
     <div class="container">
         <div class="inner">
             <div class="gallery">
 
-                <img src="{{ url_for('static',filename='images/'+image_name) }}" alt="{{image_name}}"
+                <img src="{{ url_for('static',filename='images/'+image_names[i]) }}" alt="{{image_names[i]}}"
                     width="600" height="400">
                 <div class="desc">
-                    <h4>We think this is {{prediction}}</h4>
+                    <h4>We think this is {{predictions[i]}}</h4>
                 </div>
             </div>
         </div>

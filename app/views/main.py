@@ -17,11 +17,12 @@ ALLOWED_EXTENSIONS = {"jpg","jpeg","png"}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-predictions = {}
+predictions = []
+image_names = []
 
 @main.route('/')
 def index():
-    return render_template("index.html", predictions=predictions)
+    return render_template("index.html",image_names=image_names,predictions=predictions)
 
     # content_type = 'image/jpeg'
     # headers = {'content-type': content_type}
@@ -39,10 +40,11 @@ def index_post():
                 image_path = os.path.join(basedir,"static","images",image_name)
                 image.save(image_path)
                 prediction = predict(image_path)
-                predictions[image_name]=prediction
+                predictions.insert(0,prediction)
+                image_names.insert(0,image_name)
 
             # return render_template("index.html",predictions=predictions)
-            return render_template("index.html",predictions=predictions)
+            return render_template("index.html",image_names=image_names,predictions=predictions)
 
     # r = request
     # # convert string of image data to uint8
