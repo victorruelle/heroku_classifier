@@ -10,7 +10,7 @@ def get_session_id():
 
 class DataManager():
 
-    DATA_PERSISTANCE = 600
+    DATA_PERSISTANCE = 120
 
     def __init__(self):
         self.predictions = {}
@@ -26,7 +26,7 @@ class DataManager():
 
     def exists(self,session_id = None):
         session_id = session_id or get_session_id()
-        return session_id in self.history
+        return session_id in self.image_names
 
     def record(self,image_name,prediction):
         self.remove_old_users()
@@ -58,21 +58,16 @@ class DataManager():
             try:
                 os.remove(image_path)
             except Exception:
-                print("ERROR : could not delete image {}".format(image_path))
-            
-            if session_id in self.predictions:
-                self.predictions.pop(session_id)
-            if session_id in self.image_names:
-                self.image_names.pop(session_id)
-            if session_id in self.history:
-                self.history.pop(session_id)
+                print("ERROR : could not delete image {}".format(image_path))            
+            self.predictions.pop(session_id)
+            self.image_names.pop(session_id)
         else:
             pass
 
     def remove_old_users(self):
         now = time.time()
         for session_id in self.history:
-            if now - self.history[session_id] > DataManager.DATA_PERSISTANCE :
+            if self.exists(session_id) and now - self.history[session_id] > DataManager.DATA_PERSISTANCE :
                 self.remove_user(session_id)
 
     def refresh(self):
