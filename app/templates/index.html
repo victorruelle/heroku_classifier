@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+    <title> Online classification demo</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/skel.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/skel-layers.min.js') }}"></script>
+    <script>
+        skel.init({
+            reset: 'full',
+            breakpoints: {
+                global: { href: '{{url_for("static",filename="css/style.css")}}', containers: 1400, grid: { gutters: ['2em', 0] } },
+                xlarge: { media: '(max-width: 1680px)', href: '{{url_for("static",filename="css/style-xlarge.css")}}', containers: 1200 },
+                large: { media: '(max-width: 1280px)', href: '{{url_for("static",filename="css/style-large.css")}}', containers: 960, grid: { gutters: ['1.5em', 0] }, viewport: { scalable: false } },
+                medium: { media: '(max-width: 980px)', href: '{{url_for("static",filename="css/style-medium.css")}}', containers: '90%', grid: { zoom: 2 } },
+                small: { media: '(max-width: 736px)', href: '{{url_for("static",filename="css/style-small.css")}}', containers: '90%!', grid: { gutters: ['1.25em', 0], zoom: 3 } },
+                xsmall: { media: '(max-width: 480px)', href: '{{url_for("static",filename="css/style-xsmall.css")}}' }
+            },
+            plugins: {
+                layers: {
+
+                    // Config.
+                    config: {
+                        transformTest: function () { return skel.vars.isMobile; }
+                    },
+
+                    // Navigation Button.
+                    navButton: {
+                        breakpoints: 'medium',
+                        height: '4em',
+                        html: '<span class="toggle" data-action="toggleLayer" data-args="navPanel"></span>',
+                        position: 'top-left',
+                        side: 'top',
+                        width: '6em'
+                    },
+
+                    // Navigation Panel.
+                    navPanel: {
+                        animation: 'overlayX',
+                        breakpoints: 'medium',
+                        clickToHide: true,
+                        height: '100%',
+                        hidden: true,
+                        html: '<div data-action="navList" data-args="nav"></div>',
+                        orientation: 'vertical',
+                        position: 'top-left',
+                        side: 'left',
+                        width: 250
+                    }
+
+                }
+            }
+        });
+    </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/init.js') }}"></script>
+</head>
+
+<body class="landing">
+
+
+    <section id="banner">
+        <div class="inner">
+            <h2>Pikachu, KanyeWest and Cats classifier demo</h2>
+            <p>Upload a photo to see the prediction!</p>
+            <form action="/" method="POST" enctype="multipart/form-data">
+                <input type="file" class="custom-file-input" name="image" id="image">
+                <button type="submit" class="btn btn-primary">Upload</button>
+        </div>
+    </section>
+
+    {%for image_name,prediction in predictions.items() %}
+
+    <div class="container">
+        <div class="inner">
+            <div class="gallery">
+
+                <img src="{{ url_for('static',filename='images/'+image_name) }}" alt="{{image_name}}"
+                    width="600" height="400">
+                <div class="desc">
+                    <h4>We think this is {{prediction}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+
+</html>
