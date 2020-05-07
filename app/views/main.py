@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
 import os
 import numpy as np
-import cv2
 
 from app import app 
 
@@ -24,9 +23,6 @@ image_names = []
 def index():
     return render_template("index.html",image_names=image_names,predictions=predictions)
 
-    # content_type = 'image/jpeg'
-    # headers = {'content-type': content_type}
-    # response = requests.post(test_url, data=img_encoded.tostring(), headers=headers)
 
 @main.route('/',methods=["GET",'POST'])
 def index_post():
@@ -43,14 +39,5 @@ def index_post():
                 predictions.insert(0,prediction)
                 image_names.insert(0,image_name)
 
-            # return render_template("index.html",predictions=predictions)
             return render_template("index.html",image_names=image_names,predictions=predictions)
-
-    # r = request
-    # # convert string of image data to uint8
-    # nparr = np.fromstring(r.data, np.uint8)
-    # # decode image
-    # img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    # prediction = model.predict.predict(img) 
-    # render_template("index",prediction=prediction)
     
