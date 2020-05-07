@@ -75,50 +75,70 @@
             padding: 6px 12px;
             cursor: pointer;
         }
-
     </style>
 </head>
 
 <body class="landing">
 
-
-    <section id="banner">
-        <div class="inner">
-            <h2>Pikachu, KanyeWest and Cats classifier demo</h2>
-            <p>Upload a photo to see the prediction!</p>
-            <form action="/" method="POST" enctype="multipart/form-data">
-                <label class="button big">
-                    <input type="file" class="custom-file-input" name="image" id="image"
-                        onchange="{ this.form.submit(); }">
-                    Select a photo
-                </label>
-                <!-- <button type="submit" class="btn btn-primary">Upload</button> -->
-            </form>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-warning" role="alert">
+            {{ message }}
         </div>
-    </section>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
 
-    {%if image_name != ""%}
 
-    <div class="container" style="margin-top: 50px;">
-        <div class="inner2">
-            <img src="{{ url_for('static',filename='images/'+image_name) }}" alt="{{image_name}}" width="600"
-                height="400">
-            <div class="inner2 desc">
-                <h4>We think this is {{prediction}}</h4>
+        <section id="banner">
+            <div class="inner">
+                <h2>Pikachu, KanyeWest and Cats classifier demo</h2>
+                <p>Upload a photo to see the prediction!</p>
+                <form action="/" method="POST" enctype="multipart/form-data">
+                    <label class="button big">
+                        <input type="file" class="custom-file-input" name="image" id="image"
+                            onchange="{ this.form.submit(); }">
+                        Select a local picture
+                    </label>
+                </form>
+                <p>Or use an image url</p>
+                <form action="/" method="POST">
+                    <div class="field">
+                        <div class="control">
+                            <input size="5" type="text" name="url" placeholder="Enter an image url"
+                                autofocus="">
+                        </div>
+                    </div>
+                    <button class="button is-block is-info is-large is-fullwidth">Submit</button>
+                </form>
+            </div>
+        </section>
+
+        {%if image_name != ""%}
+
+        <div class="container" style="margin-top: 50px;">
+            <div class="inner2">
+                <img src="{{ url_for('static',filename='images/'+image_name) }}" alt="{{image_name}}" width="600"
+                    height="400">
+                <div class="inner2 desc">
+                    <h4>We think this is {{prediction}}</h4>
+                </div>
             </div>
         </div>
-    </div>
 
-    {% endif %}
+        {% endif %}
 
-    <div class="container" style="margin-top: 50px;">
-        <div class="inner2">
-            <h2>Data privacy</h2>
-            <p>Uploaded images are automatically deleted after 10 minutes and can be manually deleted
-                using the button below. Moreover, submitted pictures are associated with your IP address and only you
-                can view them as long as they're not deleted.</p>
-            <div class="button big inner2"><a href="{{url_for('main.refresh')}}">Clear image</a></div>
+        <div class="container" style="margin-top: 50px;">
+            <div class="inner2">
+                <h2>Data privacy</h2>
+                <p>Uploaded images are automatically deleted after 10 minutes and can be manually deleted
+                    using the button below. Moreover, submitted pictures are associated with your IP address and only
+                    you
+                    can view them as long as they're not deleted. Note that uploading a new picture erases the previous
+                    one.</p>
+                <div class="button big inner2"><a href="{{url_for('main.refresh')}}">Clear image</a></div>
+            </div>
         </div>
-    </div>
 
 </html>

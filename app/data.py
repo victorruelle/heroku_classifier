@@ -76,5 +76,9 @@ class DataManager():
         for session_id in self.history:
             if now - self.history[session_id] > DataManager.DATA_PERSISTANCE :
                 self.remove_user(session_id)
+
+    def refresh(self):
+        for session_id in self.history:
+            self.remove_user(session_id)
     
 data_manager = DataManager()
