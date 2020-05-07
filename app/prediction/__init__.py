@@ -1,14 +1,13 @@
 # from tensorflow.keras.models import load_model
 import tflite_runtime.interpreter as tflite
+from flask import url_for
 import numpy as np
 from PIL import Image
 import os
 
-cur_dir = os.path.abspath(os.path.dirname(__file__))
+from app import app
 
-# model = load_model(os.path.join(cur_dir,"model.h5"))
 classes = ["Cats","KanyeWest","Pikachu"]
-
 
 def predict_lite(image_path):
 
@@ -38,7 +37,7 @@ def predict_lite(image_path):
     image = image.reshape(1,256,256,3)
     image = np.float32(image)
     
-    interpreter = tflite.Interpreter(model_path=os.path.join(cur_dir,"model.tflite"))
+    interpreter = tflite.Interpreter(model_path=os.path.join(app.static_folder,"model.tflite"))
     interpreter.allocate_tensors()
 
     input_details = interpreter.get_input_details()

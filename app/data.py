@@ -1,8 +1,8 @@
-from flask import request
+from flask import request, url_for
 import time
 import os
 
-basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+from app import app
 
 def get_session_id():
     return request.remote_addr
@@ -56,7 +56,7 @@ class DataManager():
         if self.exists(session_id):
             assert session_id in self.image_names, "{} does not contain {}".format(self.image_names,session_id)
             image_name = self.image_names[session_id]
-            image_path = os.path.join(basedir,"static","images",image_name)
+            image_path = os.path.join(app.static_folder,"images",image_name)
             try:
                 os.remove(image_path)
             except Exception:
