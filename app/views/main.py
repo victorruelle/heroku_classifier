@@ -16,12 +16,17 @@ ALLOWED_EXTENSIONS = {"jpg","jpeg","png"}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-predictions = []
-image_names = []
+class History():
+
+    def __init__(self):
+        self.predictions = []
+        self.image_names = []
+
+history = History()
 
 @main.route('/')
 def index():
-    return render_template("index.html",image_names=image_names,predictions=predictions)
+    return render_template("index.html",image_names=history.image_names,predictions=history.predictions)
 
 
 @main.route('/',methods=["GET",'POST'])
@@ -32,12 +37,25 @@ def index_post():
 
             image = request.files["image"]
             if allowed_file(image.filename):
-                image_name = "input_{}.jpg".format(len(predictions))
+                image_name = "input_{}.jpg".format(len(history.predictions))
                 image_path = os.path.join(basedir,"static","images",image_name)
                 image.save(image_path)
                 prediction = predict(image_path)
-                predictions.insert(0,prediction)
-                image_names.insert(0,image_name)
+                history.predictions.insert(0,prediction)
+                history.image_names.insert(0,image_name)
 
-            return render_template("index.html",image_names=image_names,predictions=predictions)
+            return render_template("index.html",image_names=history.image_names,predictions=history.predictions)
+
+
+@main.route('/refresh')
+def refresh():
+    for image_name in history.image_names:
+        image_path = os.path.join(basedir,"static","images",image_name)
+        try:
+            os.remove(image_path)
+        except Exception:
+            print("ERROR : could not delete image {}".format(image_path))
+        history.image_names = []
+        history.predictions = []
     
+    return redirect(url_for("main.index"))
