@@ -6,7 +6,7 @@ import requests
 
 from app import app
 from app.prediction import predict
-from app.utils import get_clean_stack
+from app.utils import get_clean_stack, list_files
 from app.data import data_manager, get_session_id
 
 ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}
@@ -18,6 +18,7 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
+    print(list_files(app.static_folder))
     return render_template("index.html", image_name=data_manager.get_image_name(), prediction=data_manager.get_prediction())
 
 
