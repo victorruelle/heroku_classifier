@@ -10,8 +10,6 @@ cur_dir = os.path.abspath(os.path.dirname(__file__))
 classes = ["Cats","KanyeWest","Pikachu"]
 
 
-import matplotlib.pyplot as plt
-
 def predict_lite(image_path):
 
     image = Image.open(image_path).convert('RGB')
