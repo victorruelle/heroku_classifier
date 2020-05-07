@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from werkzeug.utils import secure_filename
 import os
 import numpy as np
-import wget
 import requests
 
 from app import app
