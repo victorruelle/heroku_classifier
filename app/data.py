@@ -78,7 +78,8 @@ class DataManager():
                 self.remove_user(session_id)
 
     def refresh(self):
-        for session_id in self.history:
+        while len(self.history)>0:
+            session_id = self.history[0]
             self.remove_user(session_id)
     
 data_manager = DataManager()
