@@ -9,7 +9,7 @@ from app import app
 
 classes = ["Cats","KanyeWest","Pikachu"]
 
-def predict_lite(image_path):
+def predict(image_path):
 
     image = Image.open(image_path).convert('RGB')
     # scale
@@ -50,45 +50,4 @@ def predict_lite(image_path):
 
     preds = np.squeeze(output_data)
 
-    print("Predictions :",preds)
-
     return classes[np.argmax(preds)]
-
-
-
-
-
-def predict_tf(image_path):
-
-    image = Image.open(image_path).convert('RGB')
-    # scale
-    width, height = image.size
-    if min(width,height)>256:
-        image.thumbnail((256,256), Image.ANTIALIAS)
-    else:
-        factor = min(width,height)/256
-        new_width,new_height = int(width/factor),int(height/factor)
-        image.thumbnail((new_width,new_height), Image.ANTIALIAS)
-
-
-    # crop
-    new_width, new_height = 256,256
-    width, height = image.size   # Get dimensions
-    left = (width - new_width)/2
-    top = (height - new_height)/2
-    right = (width + new_width)/2
-    bottom = (height + new_height)/2
-    image = image.crop((left, top, right, bottom))
-
-    image = np.array(image)
-    image = image/255
-
-    image = image.reshape(1,256,256,3)
-
-    preds = model.predict(image)[0]
-    print("Predictions :",preds)
-
-    return classes[np.argmax(preds)]
-
-
-predict = predict_lite

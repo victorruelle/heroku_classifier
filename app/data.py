@@ -41,7 +41,6 @@ class DataManager():
         if not self.exists():
             self.init_user()
         session_id = get_session_id()
-        print("Getting predictions for {} : {} in {}".format(self.predictions[session_id],session_id,self.predictions))
         return  self.predictions[session_id]
 
     def get_image_name(self):
@@ -49,7 +48,6 @@ class DataManager():
         if not self.exists():
             self.init_user()
         session_id = get_session_id()
-        print("Getting image names for {} : {} in  {}".format(session_id,self.image_names[session_id],self.image_names))
         return  self.image_names[session_id]
 
     def remove_user(self,session_id):
